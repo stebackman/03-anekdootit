@@ -24,11 +24,23 @@ const App = () => {
     const randomIndex = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomIndex);
   };
+  const [votes, setVotes] = useState(new Uint8Array(anecdotes.length));
+
+  const voteForAnecdote = () => {
+    const copy = new Uint8Array(votes);
+    copy[selected] += 1;
+    setVotes(copy);
+  };
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>Has {votes[selected]} votes</p>
+      <Button handleClick={voteForAnecdote} text="Vote" />
       <Button handleClick={getRandomAnecdote} text="Get Another Anecdote" />
+      <h2>Anecdote with the most votes</h2>
+      <p>{anecdotes[votes.indexOf(Math.max(...votes))]}</p>
+      <p>Has {Math.max(...votes)} votes</p>
     </div>
   );
 };
